@@ -5,6 +5,8 @@ const ENV = {
   defaultUserPassword: 'Test@123',
   //defaultUserPassword: 'Aa!123456789',
   defaultFullName: 'Automation User',
+  referralCode: '478673',
+
 
   defaultCardNumber: '5555 5555 5555 4444',
   expdate: '10 / 32',

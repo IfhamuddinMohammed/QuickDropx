@@ -25,7 +25,8 @@ test('signup and onboarding flows (POM)', async ({ page }) => {
   const user = {
     email: `auto_${Date.now()}@yopmail.com`,
     fullName: ENV.defaultFullName,
-    password: ENV.defaultUserPassword
+    password: ENV.defaultUserPassword,
+    referralCode: ENV.referralCode
   };
 
   // Register → Choose Store

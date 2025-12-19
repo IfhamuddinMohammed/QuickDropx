@@ -11,14 +11,16 @@ export default class RegisterPage extends BasePage {
     this.fullNameInput = page.locator('input[placeholder*="Full Name" i]');
     this.passwordInput = page.locator('input[placeholder*="password" i]').first();
     this.confirmPasswordInput = page.locator('input[placeholder*="confirm" i]');
+    this.referralcodeInput = page.locator('input[placeholder*="referral code" i]');
+
     this.joinButton = page.getByRole('button', { name: /^join$/i });
   }
 
-  async register({ email, fullName, password }) {
+  async register({ email, fullName, password, referralCode }) {
     // Email — MUST blur to trigger validation
     await expect(this.emailInput).toBeVisible();
     await this.emailInput.fill(email);
-    await this.emailInput.press('Tab'); // 🔥 critical
+    await this.emailInput.press('Tab'); 
 
     // Full name
     await this.fullNameInput.fill(fullName);
@@ -31,6 +33,10 @@ export default class RegisterPage extends BasePage {
     // Confirm password
     await this.confirmPasswordInput.fill(password);
     await this.confirmPasswordInput.press('Tab');
+
+// Referral code
+    await this.referralcodeInput.fill(referralCode);
+    await this.referralcodeInput.press('Tab');
 
     // Wait for React validation to complete
     await expect(this.joinButton).toBeEnabled({ timeout: 30_000 });
