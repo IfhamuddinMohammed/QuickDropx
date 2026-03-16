@@ -34,7 +34,9 @@ export default class AddProductPage extends BasePage {
     await this.singleProductTab.click();
 
     await expect(this.urlInput).toBeVisible();
+    await this.urlInput.click();
     await this.urlInput.fill(url);
+    await this.urlInput.press('Enter');
 
     await expect(this.detectedSupplier).toBeVisible({ timeout: 15_000 });
 
