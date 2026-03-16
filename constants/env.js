@@ -1,9 +1,10 @@
 const ENV = {
-  baseUrl: 'https://dev.platform.quickdropx.com',
-  //baseUrl: 'https://platform.quickdropx.com/',
-  defaultUserEmail: 'shahfayaz.softbuilders+123@gmail.com',
+  //baseUrl: 'https://dev.platform.quickdropx.com',
+  baseUrl: 'https://platform.quickdropx.com/',
+  //defaultUserEmail: 'qa@yopmail.com',
+  //defaultUserPassword: 'Test@123',
+  defaultUserEmail: 'ifhamsoftbuilders@gmail.com',
   defaultUserPassword: 'Test@123',
-  //defaultUserPassword: 'Aa!123456789',
   defaultFullName: 'Automation User',
   referralCode: '478673',
 

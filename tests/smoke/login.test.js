@@ -16,6 +16,6 @@ test('Verify user can login successfully', async ({ page }) => {
   );
 
   await expect(
-    page.getByRole('heading', { name: /overview dashboard/i })
+    page.getByRole('heading', { name: /Welcome back, /i })
   ).toBeVisible();
 });

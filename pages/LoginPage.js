@@ -9,7 +9,7 @@ export default class LoginPage extends BasePage {
     this.passwordInput = page.getByRole('textbox', { name: 'Password' });
     this.loginButton = page.getByRole('button', { name: 'LOGIN' });
     this.dashboardHeading = page.getByRole('heading', {
-      name: /Overview Dashboard/i
+      name: /Welcome back,/i
     });
   }
 

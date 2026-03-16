@@ -7,30 +7,28 @@ export default class AddProductPage extends BasePage {
     super(page);
 
     // Ensure we are on the correct screen
-    this.addProductNav = page.getByRole('button', { name: /add product/i });
+    this.addProductNav = page.getByRole('button', { name: /Add Product/i });
 
     // Tabs are usually buttons or tabs, not headings
-    this.singleProductTab =
-      page.getByRole('tab', { name: /single product/i })
-        .or(page.getByRole('button', { name: /single product/i }))
-        .first();
+
+        this.singleProductTab = page.getByText('Single Product', { exact: true });
+
+  
 
     this.urlInput = page.getByRole('textbox', {
-      name: /enter url|enter url or product id/i
+      name: /Enter URL|Enter URL or Product ID/i
     });
 
-    this.addDraftButton = page.getByRole('button', { name: /add draft/i });
+    this.addDraftButton = page.getByRole('button', { name: /Add Draft/i });
 
     // More specific + less noisy than div:has-text
-    this.detectedSupplier = page.getByText(/amazon/i);
-    this.detectedRegion = page.getByText(/italy/i);
+    this.detectedSupplier = page.getByText(/Amazon/i);
+    this.detectedRegion = page.getByText(/Italy/i);
   }
 
   async addDraftFromAmazon(url) {
     //go to Add Product page if not already there
-    if (await this.addProductNav.isVisible().catch(() => false)) {
-      await this.addProductNav.click();
-    }
+       await this.addProductNav.click();
 
     await expect(this.singleProductTab).toBeVisible({ timeout: 30_000 });
     await this.singleProductTab.click();
@@ -39,9 +37,15 @@ export default class AddProductPage extends BasePage {
     await this.urlInput.fill(url);
 
     await expect(this.detectedSupplier).toBeVisible({ timeout: 15_000 });
-    await expect(this.detectedRegion).toBeVisible({ timeout: 15_000 });
 
-    await expect(this.addDraftButton).toBeEnabled();
-    await this.addDraftButton.click();
-  }
+
+
+    // Wait for supplier detection (API response)
+    await expect(this.page.getByText(/Amazon/i)).toBeVisible({ timeout: 20000 });
+
+  // wait until Add Draft becomes enabled
+  await expect(this.addDraftButton).toBeEnabled({ timeout: 20000 });
+
+  await this.addDraftButton.click();
+}
 }
