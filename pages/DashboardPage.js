@@ -6,7 +6,7 @@ export default class DashboardPage extends BasePage {
   constructor(page) {
     super(page);
     this.overviewHeading = page.getByRole('heading', {
-      name: /Overview Dashboard/i
+      name: /Welcome back,/i
     });
   }
 
@@ -19,6 +19,6 @@ export default class DashboardPage extends BasePage {
   }
 
   async goToDrafts() {
-    await this.page.goto('/drafts?page=1&limit=10&tab=drafts');
+    await this.page.goto('/drafts?tab=drafts&page=1&limit=10');
   }
 }

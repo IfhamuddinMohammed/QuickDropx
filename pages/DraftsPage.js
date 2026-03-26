@@ -1,26 +1,40 @@
 // pages/DraftsPage.js
 import BasePage from './BasePage.js';
+import { expect } from '@playwright/test';
 
 export default class DraftsPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.publishButton = page.locator('button:has-text("Publish")');
+    this.publishButton  = this.page.getByRole('button', { name: /^Publish$/i });
+    this.successToast   = this.page.getByText(/published|success/i);
+    this.draftRows      = this.page.locator('tbody tr');
   }
 
   async selectDraftByRowIndex(index = 0) {
-    const checkbox = this.page
-      .locator('tbody tr')
-      .nth(index)
-      .locator('input[type="checkbox"]');
+    const row = this.draftRows.nth(index);
+    await expect(row).toBeVisible({ timeout: 15_000 });
 
-    await checkbox.waitFor();
+    const checkbox = row.locator('input[type="checkbox"]');
+    await expect(checkbox).toBeVisible();
     await checkbox.check();
   }
 
+  async selectMultipleDrafts(indices = [0]) {
+    for (const index of indices) {
+      await this.selectDraftByRowIndex(index);
+    }
+  }
+
   async publishSelectedDrafts() {
-    await this.publishButton.waitFor();
+    await expect(this.publishButton).toBeEnabled({ timeout: 10_000 });
     await this.publishButton.click();
-    await this.page.waitForTimeout(3000);
+
+    // Wait for publish confirmation — replace hard wait with smart assertion
+    await expect(this.successToast).toBeVisible({ timeout: 20_000 });
+  }
+
+  async getDraftCount() {
+    return await this.draftRows.count();
   }
 }

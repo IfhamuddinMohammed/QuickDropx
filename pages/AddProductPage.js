@@ -6,48 +6,33 @@ export default class AddProductPage extends BasePage {
   constructor(page) {
     super(page);
 
-    // Ensure we are on the correct screen
-    this.addProductNav = page.getByRole('button', { name: /Add Product/i });
+    this.addProductNav    = page.getByRole('button', { name: /Add Product/i });
+    this.singleProductTab = page.getByText('Single Product', { exact: true });
+    this.urlInput         = page.getByRole('textbox', { name: /Enter URL|Enter URL or Product ID/i });
+    this.addDraftButton   = page.getByRole('button', { name: /Add Draft/i });
 
-    // Tabs are usually buttons or tabs, not headings
-
-        this.singleProductTab = page.getByText('Single Product', { exact: true });
-
-  
-
-    this.urlInput = page.getByRole('textbox', {
-      name: /Enter URL|Enter URL or Product ID/i
-    });
-
-    this.addDraftButton = page.getByRole('button', { name: /Add Draft/i });
-
-    // More specific + less noisy than div:has-text
+    // Supplier / region detection labels (shown after URL is scraped)
     this.detectedSupplier = page.getByText(/Amazon/i);
-    this.detectedRegion = page.getByText(/Italy/i);
+    this.detectedRegion   = page.getByText(/Italy/i);
   }
 
   async addDraftFromAmazon(url) {
-    //go to Add Product page if not already there
-       await this.addProductNav.click();
+    // Navigate to Add Product page via sidebar button
+    await this.addProductNav.click();
 
     await expect(this.singleProductTab).toBeVisible({ timeout: 30_000 });
     await this.singleProductTab.click();
 
     await expect(this.urlInput).toBeVisible();
-    await this.urlInput.click();
     await this.urlInput.fill(url);
     await this.urlInput.press('Enter');
 
-    await expect(this.detectedSupplier).toBeVisible({ timeout: 15_000 });
+    // Wait for supplier detection (single check — no duplicate)
+    await expect(this.detectedSupplier).toBeVisible({ timeout: 20_000 });
+    await expect(this.detectedRegion).toBeVisible({ timeout: 10_000 });
 
-
-
-    // Wait for supplier detection (API response)
-    await expect(this.page.getByText(/Amazon/i)).toBeVisible({ timeout: 20000 });
-
-  // wait until Add Draft becomes enabled
-  await expect(this.addDraftButton).toBeEnabled({ timeout: 20000 });
-
-  await this.addDraftButton.click();
-}
+    // Wait until Add Draft button is enabled (API scrape complete)
+    await expect(this.addDraftButton).toBeEnabled({ timeout: 20_000 });
+    await this.addDraftButton.click();
+  }
 }
