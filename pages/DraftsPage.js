@@ -6,35 +6,40 @@ export default class DraftsPage extends BasePage {
   constructor(page) {
     super(page);
 
-    this.publishButton  = this.page.getByRole('button', { name: /^Publish$/i });
-    this.successToast   = this.page.getByText(/published|success/i);
-    this.draftRows      = this.page.locator('tbody tr');
+    // Draft items are rendered as cards. The button accessible name is "Publish"
+    // (the "+" is an icon image, not text — getByRole strips it).
+    // exact: true avoids matching the disabled "Publish Products" bulk-action button.
+    this.publishButtons  = this.page.getByRole('button', { name: 'Publish', exact: true });
+    // Actual toast: "Congratulations! Your product has been successfully published to the store..."
+    this.successToast    = this.page.getByText(/successfully published to the store|Congratulations/i);
+    // Import confirmation notification shown in the notification panel
+    this.importConfirmed = this.page.getByText(/created successfully|variants imported/i);
   }
 
-  async selectDraftByRowIndex(index = 0) {
-    const row = this.draftRows.nth(index);
-    await expect(row).toBeVisible({ timeout: 15_000 });
+  async publishFirstDraft() {
+    // Confirm at least one import notification is visible (Draft #xxx created successfully).
+    // Use .first() — multiple draft cards may match the same regex (strict mode violation).
+    await expect(this.importConfirmed.first()).toBeVisible({ timeout: 30_000 });
 
-    const checkbox = row.locator('input[type="checkbox"]');
-    await expect(checkbox).toBeVisible();
-    await checkbox.check();
-  }
+    // Wait for the Publish button on the first draft card
+    await expect(this.publishButtons.first()).toBeEnabled({ timeout: 15_000 });
+    await this.publishButtons.first().click();
 
-  async selectMultipleDrafts(indices = [0]) {
-    for (const index of indices) {
-      await this.selectDraftByRowIndex(index);
+    // Race success toast against any error/warning toast so failures are reported clearly.
+    const errorToast = this.page.getByText(/error|failed|something went wrong|cannot publish|unable to publish/i).first();
+
+    const result = await Promise.race([
+      this.successToast.first().waitFor({ state: 'visible', timeout: 120_000 }).then(() => 'success'),
+      errorToast.waitFor({ state: 'visible', timeout: 120_000 }).then(() => 'error'),
+    ]);
+
+    if (result === 'error') {
+      const msg = await errorToast.textContent().catch(() => '(could not read error text)');
+      throw new Error(`Publish failed — app showed error toast: "${msg}"`);
     }
   }
 
-  async publishSelectedDrafts() {
-    await expect(this.publishButton).toBeEnabled({ timeout: 10_000 });
-    await this.publishButton.click();
-
-    // Wait for publish confirmation — replace hard wait with smart assertion
-    await expect(this.successToast).toBeVisible({ timeout: 20_000 });
-  }
-
   async getDraftCount() {
-    return await this.draftRows.count();
+    return await this.publishButtons.count();
   }
 }

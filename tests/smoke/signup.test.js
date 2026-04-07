@@ -8,6 +8,8 @@ import DashboardPage from '../../pages/DashboardPage.js';
 import ENV from '../../constants/env.js';
 
 test('signup and onboarding flows (POM)', async ({ page }) => {
+  // Signup + Stripe payment can take several minutes in sandbox environments
+  test.setTimeout(300_000);
   const login = new LoginPage(page);
   const register = new RegisterPage(page);
   const dashboard = new DashboardPage(page);
@@ -48,9 +50,11 @@ test('signup and onboarding flows (POM)', async ({ page }) => {
   await payment.continue();
 
   // Confirmation
+  // Stripe sandbox can be slow — allow 2 minutes for the payment to complete
+  // and the app to navigate to the success page.
   await expect(
     page.getByText('Your QuickdropX trial plan is')
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 120_000 });
 
   await page.getByRole('button', { name: 'Go to Dashboard' }).click();
 

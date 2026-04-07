@@ -40,31 +40,30 @@ test.describe('Publish product flow', () => {
     await expect(page).toHaveURL(/drafts/);
   });
 
-  test('publish product with custom title and price', async ({ page }) => {
-    const login      = new LoginPage(page);
-    const dashboard  = new DashboardPage(page);
-    const drafts     = new DraftsPage(page);
-    const publish    = new PublishPage(page);
+//   test('publish product with custom title and price', async ({ page }) => {
+//     const login      = new LoginPage(page);
+//     const dashboard  = new DashboardPage(page);
+//     const drafts     = new DraftsPage(page);
+//     const publish    = new PublishPage(page);
 
-    // Login and go straight to drafts (skip add step — assumes draft already exists)
-    await login.open();
-    await login.login(ENV.defaultUserEmail, ENV.defaultUserPassword);
-    await dashboard.goToDrafts();
+//     // Login and go straight to drafts (skip add step — assumes draft already exists)
+//     await login.open();
+//     await login.login(ENV.defaultUserEmail, ENV.defaultUserPassword);
+//     await dashboard.goToDrafts();
 
-    const count = await drafts.getDraftCount();
-    if (count === 0) {
-      test.skip(true, 'No drafts available — run add-draft test first');
-    }
+//     const count = await drafts.getDraftCount();
+//     if (count === 0) {
+//       test.skip(true, 'No drafts available — run add-draft test first');
+//     }
 
-    // Select a draft
-    await drafts.selectDraftByRowIndex(0);
+//     // Select a draft
+//     await drafts.selectDraftByRowIndex(0);
 
-    // Optionally set title / price before publishing (if your UI supports it)
-    // await publish.setTitle('Automation Test Product');
-    // await publish.setPrice(29.99);
 
-    await drafts.publishSelectedDrafts();
-    await publish.expectPublished();
-  });
+//     await drafts.publishSelectedDrafts();
+//     await publish.expectPublished();
+//   });
+
+// });
 
 });

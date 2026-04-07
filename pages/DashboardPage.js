@@ -11,11 +11,15 @@ export default class DashboardPage extends BasePage {
   }
 
   async expectOverviewVisible() {
-    await expect(this.overviewHeading).toBeVisible();
+    // Dashboard can take time to load after signup/payment redirect
+    await expect(this.overviewHeading).toBeVisible({ timeout: 30_000 });
   }
 
   async openAddProduct() {
-    await this.page.goto('/add-product');
+    // The "Add Product" is a sidebar dropdown, not a route.
+    // Click the button, then choose "Single Product" from the flyout.
+    await this.page.getByRole('button', { name: /Add Product/i }).click();
+    await this.page.getByText('Single Product', { exact: true }).click();
   }
 
   async goToDrafts() {

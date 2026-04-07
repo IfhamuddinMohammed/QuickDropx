@@ -3,17 +3,20 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "test":            "playwright test",
-    "test:login":      "playwright test tests/smoke/login.spec.js --headed",
-    "test:signup":     "playwright test tests/smoke/signup.spec.js --headed",
-    "test:add-draft":  "playwright test tests/smoke/Add-Draft.spec.js --headed",
-    "test:publish":    "playwright test tests/smoke/publish-product.spec.js --headed",
-    "test:smoke":      "playwright test tests/smoke/ --headed",
-    "test:ci":         "playwright test",
-    "test:debug":      "playwright test --debug",
-    "report":          "playwright show-report"
+    "test": "playwright test",
+    "test:login": "playwright test tests/smoke/login.test.js --headed",
+    "test:signup": "playwright test tests/smoke/signup.test.js --headed",
+    "test:add-draft": "playwright test tests/smoke/Add-Draft.spec.js --headed",
+    "test:publish": "playwright test tests/smoke/publish-product.test.js --headed",
+    "test:supplier": "playwright test tests/smoke/addSupplier-settings.test.js --headed",
+    "test:smoke": "playwright test tests/smoke/ --headed",
+    "test:ci": "playwright test",
+    "test:debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "ui": "playwright test --ui"
   },
   "dependencies": {
-    "@playwright/test": "^1.57.0"
+    "@playwright/test": "^1.57.0",
+    "dotenv": "^17.3.1"
   }
 }

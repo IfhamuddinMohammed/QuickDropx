@@ -1,0 +1,36 @@
+{
+  "valid": {
+    "mastercard": {
+      "number": "5555 5555 5555 4444",
+      "expiry": "10/32",
+      "cvc": "123",
+      "label": "Valid Mastercard"
+    },
+    "visa": {
+      "number": "4111 1111 1111 1111",
+      "expiry": "12/34",
+      "cvc": "456",
+      "label": "Valid Visa"
+    }
+  },
+  "invalid": {
+    "expired": {
+      "number": "5555 5555 5555 4444",
+      "expiry": "01/20",
+      "cvc": "123",
+      "label": "Expired Card"
+    },
+    "wrong_cvc": {
+      "number": "5555 5555 5555 4444",
+      "expiry": "10/32",
+      "cvc": "000",
+      "label": "Wrong CVC"
+    },
+    "declined": {
+      "number": "4000 0000 0000 0002",
+      "expiry": "10/32",
+      "cvc": "123",
+      "label": "Declined Card"
+    }
+  }
+}

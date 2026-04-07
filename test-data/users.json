@@ -1,0 +1,21 @@
+{
+  "standard_user": {
+    "email": "qa+standard@yopmail.com",
+    "password": "Test@1234",
+    "fullName": "Standard User",
+    "role": "user"
+  },
+  "admin_user": {
+    "email": "qa+admin@yopmail.com",
+    "password": "Test@1234",
+    "fullName": "Admin User",
+    "role": "admin"
+  },
+  "new_user": {
+    "email": "qa+new@yopmail.com",
+    "password": "Test@1234",
+    "fullName": "New User",
+    "role": "user",
+    "hasNoSubscription": true
+  }
+}

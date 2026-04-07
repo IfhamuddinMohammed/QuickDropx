@@ -15,7 +15,8 @@ test('Verify user can login successfully', async ({ page }) => {
     ENV.defaultUserPassword
   );
 
+  // "Here's what's happening..." is a <p>, not a heading — use the actual <h1> instead.
   await expect(
-    page.getByRole('heading', { name: /Welcome back, /i })
+    page.getByRole('heading', { name: /Welcome back,/i })
   ).toBeVisible();
 });

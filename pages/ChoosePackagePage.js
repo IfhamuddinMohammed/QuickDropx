@@ -19,7 +19,7 @@ export default class ChoosePackagePage extends BasePage {
     await expect(this.heading()).toBeVisible();
     await expect(this.page.getByText('STARTER 200', { exact: true })).toBeVisible();
     await expect(this.page.getByText('ECONOMY 400', { exact: true })).toBeVisible();
-    await expect(this.page.getByText('PREMIUM')).toBeVisible();
+    await expect(this.page.getByText('PREMIUM 800', { exact: true })).toBeVisible();
   }
 
   /**
