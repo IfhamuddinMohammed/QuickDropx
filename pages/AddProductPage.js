@@ -10,8 +10,6 @@ export default class AddProductPage extends BasePage {
     this.singleProductTab = page.getByText('Single Product', { exact: true });
     this.urlInput         = page.getByRole('textbox', { name: /Enter URL|Enter URL or Product ID/i });
     this.addDraftButton   = page.getByRole('button', { name: /Add Draft/i });
-
-    // Supplier / region detection labels (shown after URL is scraped)
     this.detectedSupplier = page.getByText(/Amazon/i);
     this.detectedRegion   = page.getByText(/Italy/i);
   }
